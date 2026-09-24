@@ -1,0 +1,2 @@
+# Psichologijos-tyrimas
+darom tyrima
