@@ -17,28 +17,50 @@
         // 1. Inicializuojame jsPsych
         const jsPsych = initJsPsych({
             on_finish: function() {
-                // Čia vėliau pridėsime duomenų išsaugojimo logiką
                 jsPsych.data.displayData('json');
             }
         });
 
-        // 2. Sukuriame tyrimo eigą (timeline)
         let timeline = [];
 
-        // Pradinis sveikinimo ekranas (bandymui)
+        // Pradinis sveikinimo ekranas
         let welcome = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
                 <h2>Sveiki atvykę į tyrimą!</h2>
                 <p>Šio tyrimo metu analizuosime sprendimų priėmimo greitį ir mąstymo ypatumus.</p>
-                <p>Tyrimas užtruks apie 5–7 minutes.</p>
+                <p>Prašome atsakyti į kelis klausimus kuo greičiau, bet tiksliai.</p>
             `,
             choices: ['Pradėti']
         };
-
         timeline.push(welcome);
 
-        // 3. Paleidžiame tyrimą
+        // Instrukcija prieš CRT
+        let crt_instruction = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <h3>Pirma užduotis</h3>
+                <p>Perskaitykite žemiau pateiktą uždavinį ir įrašykite savo atsakymą skaičiumi.</p>
+            `,
+            choices: ['Tęsti']
+        };
+        timeline.push(crt_instruction);
+
+        // CRT 1 klausimas (Lazda ir kamuoliukas)
+        let crt_q1 = {
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>Lazda ir kamuoliukas kartu kainuoja 1,10 Eur.</b><br>Lazda kainuoja 1 Eur <b>daugiau</b> nei kamuoliukas.<br>Kiek kainuoja kamuoliukas? (Įrašykite sumą centais, pvz.: 5 arba 10)',
+                    name: 'crt_bat_ball',
+                    required: true
+                }
+            ],
+            button_label: 'Pateikti atsakymą'
+        };
+        timeline.push(crt_q1);
+
+        // Paleidžiame tyrimą
         jsPsych.run(timeline);
     </script>
 </body>
