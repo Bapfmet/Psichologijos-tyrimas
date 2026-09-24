@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psichologinis tyrimas: Mąstymo procesai ir patarlės</title>
+    <title>Psichologinis tyrimas: Mąstymo procesai</title>
 
     <!-- jsPsych biblioteka ir stiliai -->
     <script src="https://unpkg.com/jspsych@7.3.3"></script>
@@ -30,26 +30,48 @@
                 const q3_ans = surveyTextTrials[2]?.response?.crt_3 || '';
                 const q3_time = surveyTextTrials[2]?.rt || 0;
 
-                const q4_ans = surveyLikertTrial?.response?.Q0 ?? '';
-                const q5_ans = surveyLikertTrial?.response?.Q1 ?? '';
+                const q4_ans = surveyTextTrials[3]?.response?.crt_4 || '';
+                const q4_time = surveyTextTrials[3]?.rt || 0;
+
+                const q5_ans = surveyTextTrials[4]?.response?.crt_5 || '';
+                const q5_time = surveyTextTrials[4]?.rt || 0;
+
+                const q6_ans = surveyTextTrials[5]?.response?.crt_6 || '';
+                const q6_time = surveyTextTrials[5]?.rt || 0;
+
+                const q7_ans = surveyTextTrials[6]?.response?.crt_7 || '';
+                const q7_time = surveyTextTrials[6]?.rt || 0;
+
+                const q8_ans = surveyTextTrials[7]?.response?.crt_8 || '';
+                const q8_time = surveyTextTrials[7]?.rt || 0;
+
+                const q9_ans = surveyTextTrials[8]?.response?.crt_9 || '';
+                const q9_time = surveyTextTrials[8]?.rt || 0;
+
+                const q10_ans = surveyTextTrials[9]?.response?.crt_10 || '';
+                const q10_time = surveyTextTrials[9]?.rt || 0;
+
+                const confidence_ans = surveyLikertTrial?.response?.confidence ?? '';
 
                 // Atvaizduojame rezultatus norimu formatu
                 document.body.innerHTML = `
-                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 25px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 40px auto; padding: 25px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                         <h2>Tyrimo rezultatai</h2>
                         <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
                         
-                        <p><strong>1 klausimas (Atsakymas):</strong> ${q1_ans}</p>
-                        <p><strong>1 klausimo laikas:</strong> ${q1_time} ms</p>
+                        <p><strong>1 klausimas (Lazda ir kamuoliukas):</strong> ${q1_ans} (Laikas: ${q1_time} ms)</p>
+                        <p><strong>2 klausimas (Mašinos ir detalės):</strong> ${q2_ans} (Laikas: ${q2_time} ms)</p>
+                        <p><strong>3 klausimas (Ežero lelijos):</strong> ${q3_ans} (Laikas: ${q3_time} ms)</p>
+                        <p><strong>4 klausimas (Plytos svoris):</strong> ${q4_ans} (Laikas: ${q4_time} ms)</p>
+                        <p><strong>5 klausimas (Darbininkai ir duobės):</strong> ${q5_ans} (Laikas: ${q5_time} ms)</p>
+                        <p><strong>6 klausimas (Bėgimo lenktynės):</strong> ${q6_ans} (Laikas: ${q6_time} ms)</p>
+                        <p><strong>7 klausimas (Namas ir lokys):</strong> ${q7_ans} (Laikas: ${q7_time} ms)</p>
+                        <p><strong>8 klausimas (Monetos kišenėje):</strong> ${q8_ans} (Laikas: ${q8_time} ms)</p>
+                        <p><strong>9 klausimas (Ūkininko ūkio avys):</strong> ${q9_ans} (Laikas: ${q9_time} ms)</p>
+                        <p><strong>10 klausimas (Kojinės tamsoje):</strong> ${q10_ans} (Laikas: ${q10_time} ms)</p>
                         
-                        <p><strong>2 klausimas (Atsakymas):</strong> ${q2_ans}</p>
-                        <p><strong>2 klausimo laikas:</strong> ${q2_time} ms</p>
-                        
-                        <p><strong>3 klausimas (Atsakymas):</strong> ${q3_ans}</p>
-                        <p><strong>3 klausimo laikas:</strong> ${q3_time} ms</p>
-                        
-                        <p><strong>4 klausimas answer:</strong> ${q4_ans}</p>
-                        <p><strong>5 klausimas answer:</strong> ${q5_ans}</p>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                        <p><strong>11 klausimas (Pasitikėjimas savimi / viltis):</strong> ${confidence_ans} (skalėje nuo 1 iki 7)</p>
                     </div>
                 `;
             }
@@ -80,22 +102,22 @@
             choices: ['Sutinku ir pradedu']
         });
 
-        // 3. CRT Instrukcija
+        // 3. Instrukcija
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
-                <h3>I dalis: Loginiai uždaviniai</h3>
-                <p>Jums bus pateikti 3 trumpi klausimai. Atsakykite į juos įrašydami skaičių.</p>
+                <h3>Loginiai uždaviniai</h3>
+                <p>Jums bus pateikti 10 trumpų klausimų. Atsakykite į juos įrašydami atitinkamą atsakymą.</p>
             `,
             choices: ['Tęsti']
         });
 
-        // CRT Q1 (Lazda ir kamuoliukas)
+        // Q1 (Lazda ir kamuoliukas)
         timeline.push({
             type: jsPsychSurveyText,
             questions: [
                 {
-                    prompt: '<b>1.</b> Lazda ir kamuoliukas kartu kainuoja 1,10 Eur. Lazda kainuoja 1 Eur daugiau nei kamuoliukas. Kiek kainuoja kamuoliukas? (centais, pvz.: 5)',
+                    prompt: '<b>1. Lazda ir kamuoliukas</b><br>Lazda ir kamuoliukas kartu kainuoja 1,10 Eur. Lazda kainuoja 1 Eur daugiau už kamuoliuką. Kiek kainuoja kamuoliukas? (centais, pvz.: 5)',
                     name: 'crt_1',
                     required: true
                 }
@@ -103,12 +125,12 @@
             button_label: 'Kitas klausimas'
         });
 
-        // CRT Q2 (Mašinos ir detalės)
+        // Q2 (Mašinos ir detalės)
         timeline.push({
             type: jsPsychSurveyText,
             questions: [
                 {
-                    prompt: '<b>2.</b> Jei 5 mašinoms reikia 5 minučių pagaminti 5 detales, per kiek laiko 100 mašinų pagamins 100 detalių? (minutėmis)',
+                    prompt: '<b>2. Mašinos ir detalės</b><br>Jei 5 mašinoms reikia 5 minučių pagaminti 5 detales, per kiek laiko 100 mašinų pagamins 100 detalių? (minutėmis, pvz.: 5)',
                     name: 'crt_2',
                     required: true
                 }
@@ -116,49 +138,125 @@
             button_label: 'Kitas klausimas'
         });
 
-        // CRT Q3 (Lelijos ežere)
+        // Q3 (Ežero lelijos)
         timeline.push({
             type: jsPsychSurveyText,
             questions: [
                 {
-                    prompt: '<b>3.</b> Ežere auga lelijų lapai. Kasdien jų plotas padvigubėja. Jei visas ežeras užauga per 48 dienas, per kiek laiko užaugs pusė ežero? (dienomis)',
+                    prompt: '<b>3. Ežero lelijos</b><br>Ežere auga lelijų lapai. Kasdien jų plotas padvigubėja. Jei visas ežeras užauga per 48 dienas, per kiek laiko užaugs pusė ežero? (dienomis, pvz.: 47)',
                     name: 'crt_3',
                     required: true
                 }
             ],
-            button_label: 'Tęsti II dalį'
+            button_label: 'Kitas klausimas'
         });
 
-        // 4. Patarlės analizės dalis
+        // Q4 (Plytos svoris)
         timeline.push({
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <h3>II dalis: Patarlės vertinimas</h3>
-                <p>Perskaitykite lietuvių liaudies patarlę: <b>„Viltis – kvailių motina“</b>.</p>
-                <p>Kaip vertinate šį teiginį remdamiesi savo kasdiene patirtimi ir racionaliu mąstymu?</p>
-            `,
-            choices: ['Tęsti vertinimą']
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>4. Plytos svoris</b><br>Plyta sveria 1 kilogramą ir dar pusę savo svorio. Kiek sveria visa plyta? (kilogramais, pvz.: 2)',
+                    name: 'crt_4',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
         });
 
-        // Likert skaitinė skalė patarlės prasmei vertinti
+        // Q5 (Darbininkai ir duobės)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>5. Darbininkai ir duobės</b><br>Jeigu 5 vyrai per 5 dienas iškasa 5 duobes, per kiek laiko 1 vyras iškastų 1 duobę? (dienomis, pvz.: 5)',
+                    name: 'crt_5',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // Q6 (Bėgimo lenktynės)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>6. Bėgimo lenktynės</b><br>Jei bėgate bėgimo lenktynėse ir aplenkiate žmogų, kuris bėga antroje vietoje, kelintoje vietoje dabar esate jūs? (parašykite skaičių, pvz.: 1)',
+                    name: 'crt_6',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // Q7 (Namas ir lokys)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>7. Namas ir lokys</b><br>Vyras pasistatė namą, kurio visi keturi langai žiūri į pietus. Pro šalį praėjo didelis rudas lokys. Kokios spalvos buvo lokys? (parašykite spalvą)',
+                    name: 'crt_7',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // Q8 (Monetos kišenėje)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>8. Monetos kišenėje</b><br>Jūsų kišenėje yra dvi monetas, kurių bendra suma yra 55 centai. Žinoma, kad viena iš jų nėra 5 centų moneta. Kokios tai moneta (-os)? (nurodykite vertę centais, pvz.: 50 ir 5)',
+                    name: 'crt_8',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // Q9 (Ūkininko ūkio avys)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>9. Ūkininko ūkio avys</b><br>Ūkininkas turėjo 15 avių. Visi gyvuliai, išskyrus 8, sugaišo / nugaišo. Kiek avių jam liko gyvų? (parašykite skaičių)',
+                    name: 'crt_9',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // Q10 (Kojinės tamsoje)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>10. Kojinės tamsoje</b><br>Tamsiame stalčiuje sumaišytos 10 juodų ir 10 baltų kojinių. Kiek mažiausiai kojinių reikia ištraukti aklai, kad būtumėte visiškai užtikrinti, jog turite bent vieną porą vienos spalvos kojinių? (parašykite skaičių)',
+                    name: 'crt_10',
+                    required: true
+                }
+            ],
+            button_label: 'Tęsti įvertinimą'
+        });
+
+        // 11. Galutinis pasitikėjimo savimi įvertinimas
         timeline.push({
             type: jsPsychSurveyLikert,
             questions: [
                 {
-                    prompt: 'Viltis dažnai trukdo priimti racionalius, objektyviais faktais pagrįstus sprendimus (Sistemos 1 dominavimas).',
-                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', 'Sutinku', 'Visiškai sutinku'],
-                    required: true
-                },
-                {
-                    prompt: 'Viltis yra pozityvus psichologinis mechanizmas, padedantis išgyventi krizes, nepaisant šalto analitinio vertinimo (Sistemos 2 alternatyva).',
-                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', 'Sutinku', 'Visiškai sutinku'],
-                    required: true
+                    prompt: '<b>11. Galutinis pasitikėjimo savimi įvertinimas</b><br>Kaip užtikrintas (-a) savo pateiktais atsakymais jautėtės per visą šio tyrimo eigą?<br><small>1 – Visiškai nepasitikėjau (abejojau beveik kiekvienu atsakymu) | 4 – Vidutiniškai | 7 – Visiškai pasitikėjau</small>',
+                    labels: ['1', '2', '3', '4', '5', '6', '7'],
+                    required: true,
+                    name: 'confidence'
                 }
             ],
             button_label: 'Baigti tyrimą'
         });
 
-        // 5. Ačiū už dalyvavimą ekranas
+        // 12. Ačiū už dalyvavimą ekranas
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
