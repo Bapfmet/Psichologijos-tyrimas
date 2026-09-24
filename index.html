@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Psichologinis tyrimas: Mąstymo procesai ir patarlės</title>
-    
+
     <!-- jsPsych biblioteka ir stiliai -->
     <script src="https://unpkg.com/jspsych@7.3.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
@@ -17,6 +17,7 @@
     <script>
         const jsPsych = initJsPsych({
             on_finish: function() {
+                // Pasibaigus tyrimui, duomenys parodomi JSON formatu
                 jsPsych.data.displayData('json');
             }
         });
@@ -34,7 +35,19 @@
             choices: ['Pradėti']
         });
 
-        // 2. CRT Instrukcija
+        // 2. Tyrimo etika ir anonimiškumas (Informed Consent)
+        timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <h3>Tyrimo etika ir duomenų konfidencialumas</h3>
+                <p>Šis tyrimas yra <b>visiškai anoniminis</b>. Jūsų pateikti atsakymai bus naudojami tik apibendrintiems mokslo ar studijų tyrimo rezultatams gauti.</p>
+                <p>Dalyvavimas tyrime yra savanoriškas. Jūs turite teisę bet kuriuo metu nutraukti dalyvavimą be jokių neigiamų pasekmių.</p>
+                <p>Spausdami „Sutinku ir pradedu“, patvirtinate, kad susipažinote su informacija ir sutinkate dalyvauti tyrime.</p>
+            `,
+            choices: ['Sutinku ir pradedu']
+        });
+
+        // 3. CRT Instrukcija
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -83,7 +96,7 @@
             button_label: 'Tęsti II dalį'
         });
 
-        // 3. Patarlės analizės dalis (S 1 vs S 2 kontekstas)
+        // 4. Patarlės analizės dalis (S 1 vs S 2 kontekstas)
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -100,7 +113,7 @@
             questions: [
                 {
                     prompt: 'Viltis dažnai trukdo priimti racionalius, objektyviais faktais pagrįstus sprendimus (Sistemos 1 dominavimas).',
-                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', Sutinku, 'Visiškai sutinku'],
+                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', 'Sutinku', 'Visiškai sutinku'],
                     required: true
                 },
                 {
@@ -110,6 +123,17 @@
                 }
             ],
             button_label: 'Baigti tyrimą'
+        });
+
+        // 5. Ačiū už dalyvavimą ekranas
+        timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <h2>Ačiū už dalyvavimą!</h2>
+                <p>Jūsų atsakymai sėkmingai užregistruoti. Dėkojame, kad skyrėte laiko šiam tyrimui.</p>
+                <p>Paspauskite mygtuką „Baigti“, kad pamatytumėte surinktus duomenis.</p>
+            `,
+            choices: ['Baigti']
         });
 
         jsPsych.run(timeline);
