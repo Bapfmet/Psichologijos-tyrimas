@@ -10,11 +10,11 @@
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script>
     <link href="https://unpkg.com/jspsych@7.3.3/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <script>
-        // 1. Inicializuojame jsPsych
         const jsPsych = initJsPsych({
             on_finish: function() {
                 jsPsych.data.displayData('json');
@@ -23,44 +23,95 @@
 
         let timeline = [];
 
-        // Pradinis sveikinimo ekranas
-        let welcome = {
+        // 1. Sveikinimas
+        timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
                 <h2>Sveiki atvykę į tyrimą!</h2>
-                <p>Šio tyrimo metu analizuosime sprendimų priėmimo greitį ir mąstymo ypatumus.</p>
-                <p>Prašome atsakyti į kelis klausimus kuo greičiau, bet tiksliai.</p>
+                <p>Šio tyrimo metu nagrinėsime sprendimų priėmimo ir mąstymo ypatumus.</p>
+                <p>Prašome atsakyti į užduotis kuo greičiau ir tiksliau.</p>
             `,
             choices: ['Pradėti']
-        };
-        timeline.push(welcome);
+        });
 
-        // Instrukcija prieš CRT
-        let crt_instruction = {
+        // 2. CRT Instrukcija
+        timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
-                <h3>Pirma užduotis</h3>
-                <p>Perskaitykite žemiau pateiktą uždavinį ir įrašykite savo atsakymą skaičiumi.</p>
+                <h3>I dalis: Loginiai uždaviniai</h3>
+                <p>Jums bus pateikti 3 trumpi klausimai. Atsakykite į juos įrašydami skaičių.</p>
             `,
             choices: ['Tęsti']
-        };
-        timeline.push(crt_instruction);
+        });
 
-        // CRT 1 klausimas (Lazda ir kamuoliukas)
-        let crt_q1 = {
+        // CRT Q1 (Lazda ir kamuoliukas)
+        timeline.push({
             type: jsPsychSurveyText,
             questions: [
                 {
-                    prompt: '<b>Lazda ir kamuoliukas kartu kainuoja 1,10 Eur.</b><br>Lazda kainuoja 1 Eur <b>daugiau</b> nei kamuoliukas.<br>Kiek kainuoja kamuoliukas? (Įrašykite sumą centais, pvz.: 5 arba 10)',
-                    name: 'crt_bat_ball',
+                    prompt: '<b>1.</b> Lazda ir kamuoliukas kartu kainuoja 1,10 Eur. Lazda kainuoja 1 Eur daugiau nei kamuoliukas. Kiek kainuoja kamuoliukas? (centais, pvz.: 5)',
+                    name: 'crt_1',
                     required: true
                 }
             ],
-            button_label: 'Pateikti atsakymą'
-        };
-        timeline.push(crt_q1);
+            button_label: 'Kitas klausimas'
+        });
 
-        // Paleidžiame tyrimą
+        // CRT Q2 (Mašinos ir detalės)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>2.</b> Jei 5 mašinoms reikia 5 minučių pagaminti 5 detales, per kiek laiko 100 mašinų pagamins 100 detalių? (minutėmis)',
+                    name: 'crt_2',
+                    required: true
+                }
+            ],
+            button_label: 'Kitas klausimas'
+        });
+
+        // CRT Q3 (Lelijos ežere)
+        timeline.push({
+            type: jsPsychSurveyText,
+            questions: [
+                {
+                    prompt: '<b>3.</b> Ežere auga lelijų lapai. Kasdien jų plotas padvigubėja. Jei visas ežeras užauga per 48 dienas, per kiek laiko užaugs pusė ežero? (dienomis)',
+                    name: 'crt_3',
+                    required: true
+                }
+            ],
+            button_label: 'Tęsti II dalį'
+        });
+
+        // 3. Patarlės analizės dalis (S 1 vs S 2 kontekstas)
+        timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `
+                <h3>II dalis: Patarlės vertinimas</h3>
+                <p>Perskaitykite lietuvių liaudies patarlę: <b>„Viltis – kvailių motina“</b>.</p>
+                <p>Kaip vertinate šį teiginį remdamiesi savo kasdiene patirtimi ir racionaliu mąstymu?</p>
+            `,
+            choices: ['Tęsti vertinimą']
+        });
+
+        // Likert skaitinė skalė patarlės prasmei vertinti
+        timeline.push({
+            type: jsPsychSurveyLikert,
+            questions: [
+                {
+                    prompt: 'Viltis dažnai trukdo priimti racionalius, objektyviais faktais pagrįstus sprendimus (Sistemos 1 dominavimas).',
+                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', Sutinku, 'Visiškai sutinku'],
+                    required: true
+                },
+                {
+                    prompt: 'Viltis yra pozityvus psichologinis mechanizmas, padedantis išgyventi krizes, nepaisant šalto analitinio vertinimo (Sistemos 2 alternatyva).',
+                    labels: ['Visiškai nesutinku', 'Nesutinku', 'Neutraliai', 'Sutinku', 'Visiškai sutinku'],
+                    required: true
+                }
+            ],
+            button_label: 'Baigti tyrimą'
+        });
+
         jsPsych.run(timeline);
     </script>
 </body>
