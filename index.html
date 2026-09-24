@@ -17,8 +17,41 @@
     <script>
         const jsPsych = initJsPsych({
             on_finish: function() {
-                // Pasibaigus tyrimui, duomenys parodomi JSON formatu
-                jsPsych.data.displayData('json');
+                // Surinkome duomenis iš atskirų klausimų
+                const surveyTextTrials = jsPsych.data.get().filter({trial_type: 'survey-text'}).values();
+                const surveyLikertTrial = jsPsych.data.get().filter({trial_type: 'survey-likert'}).values()[0];
+
+                const q1_ans = surveyTextTrials[0]?.response?.crt_1 || '';
+                const q1_time = surveyTextTrials[0]?.rt || 0;
+
+                const q2_ans = surveyTextTrials[1]?.response?.crt_2 || '';
+                const q2_time = surveyTextTrials[1]?.rt || 0;
+
+                const q3_ans = surveyTextTrials[2]?.response?.crt_3 || '';
+                const q3_time = surveyTextTrials[2]?.rt || 0;
+
+                const q4_ans = surveyLikertTrial?.response?.Q0 ?? '';
+                const q5_ans = surveyLikertTrial?.response?.Q1 ?? '';
+
+                // Atvaizduojame rezultatus norimu formatu
+                document.body.innerHTML = `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 25px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <h2>Tyrimo rezultatai</h2>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+                        
+                        <p><strong>1 klausimas (Atsakymas):</strong> ${q1_ans}</p>
+                        <p><strong>1 klausimo laikas:</strong> ${q1_time} ms</p>
+                        
+                        <p><strong>2 klausimas (Atsakymas):</strong> ${q2_ans}</p>
+                        <p><strong>2 klausimo laikas:</strong> ${q2_time} ms</p>
+                        
+                        <p><strong>3 klausimas (Atsakymas):</strong> ${q3_ans}</p>
+                        <p><strong>3 klausimo laikas:</strong> ${q3_time} ms</p>
+                        
+                        <p><strong>4 klausimas answer:</strong> ${q4_ans}</p>
+                        <p><strong>5 klausimas answer:</strong> ${q5_ans}</p>
+                    </div>
+                `;
             }
         });
 
@@ -96,7 +129,7 @@
             button_label: 'Tęsti II dalį'
         });
 
-        // 4. Patarlės analizės dalis (S 1 vs S 2 kontekstas)
+        // 4. Patarlės analizės dalis
         timeline.push({
             type: jsPsychHtmlButtonResponse,
             stimulus: `
